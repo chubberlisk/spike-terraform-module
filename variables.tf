@@ -11,3 +11,11 @@ variable "file_to_force_deployment" {
   description = "The path to file to force deployment."
 }
 
+variable "environment" {
+  description = "The type of environment you're deploying to."
+  default     = "development"
+}
+
+variable "clients" {
+  type = list(string)
+}
