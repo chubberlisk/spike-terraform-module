@@ -60,15 +60,16 @@ resource "aws_api_gateway_stage" "main" {
   stage_name    = var.environment
 }
 
-resource "random_id" "api_keys" {
+resource "random_password" "api_keys" {
   count       = length(var.clients)
-  byte_length = 16
+  length      = 16
+  special     = false
 }
 
 resource "aws_api_gateway_api_key" "api_keys" {
   count = length(var.clients)
   name  = "${var.namespace}-${var.clients[count.index]}-key"
-  value = "${var.namespace}-${var.clients[count.index]}-${random_id.api_keys[count.index].hex}"
+  value = "${var.namespace}-${var.clients[count.index]}-${random_password.api_keys[count.index].result}"
 }
 
 resource "aws_api_gateway_usage_plan" "main" {
